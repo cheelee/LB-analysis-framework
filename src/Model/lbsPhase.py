@@ -308,7 +308,7 @@ class Phase:
         # Perform sanity checks
         if len(w_recv) != len(w_sent):
             print(bcolors.ERR
-                + "*  ERROR: number of sent and received communications differ: {} <> {}".format(
+                + "*  ERROR: number of sent and received communications differ: {} != {}".format(
                 len(n_sent),
                 len(n_recv))
                 + bcolors.END)

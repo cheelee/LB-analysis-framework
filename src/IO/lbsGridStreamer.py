@@ -105,7 +105,7 @@ class GridStreamer:
         n_steps = len(point_arrays)
         if n_steps != len(cell_arrays):
             print(bcolors.ERR
-                + "*  ERROR: Number of point and cell arrays do not match: {} <> {}".format(
+                + "*  ERROR: Number of point and cell arrays do not match: {} != {}".format(
                 n_steps,
                 len(cell_arrays))
                 + bcolors.END)
@@ -116,7 +116,7 @@ class GridStreamer:
         for f_name, f_list in field_arrays.items():
             if n_steps != len(f_list):
                 print(bcolors.ERR
-                    + "*  ERROR: Number of {} arrays and data arrays do not match: {} <> {}".format(
+                    + "*  ERROR: Number of {} arrays and data arrays do not match: {} != {}".format(
                     f_name,
                     len(f_list),
                     n_steps)
@@ -157,7 +157,7 @@ class GridStreamer:
             for f_name, f_list in field_arrays.items():
                 if n_steps != len(f_list):
                     print(bcolors.ERR
-                        + "*  ERROR: Number of {} arrays and data arrays do not match: {} <> {}".format(
+                        + "*  ERROR: Number of {} arrays and data arrays do not match: {} != {}".format(
                         f_name,
                         len(f_list),
                         n_steps)
