@@ -115,7 +115,10 @@ class WriterExodusII:
         """
 
         # Retrieve number of mesh points and bail out early if empty set
-        n_p = len(self.phase.processors)
+        try:
+            n_p = len(self.phase.processors)
+        except:
+            return
         if not n_p:
             print(bcolors.ERR
                 + "*  ERROR: Empty list of processors, cannot write a mesh file"
