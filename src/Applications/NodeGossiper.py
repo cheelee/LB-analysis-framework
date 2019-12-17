@@ -41,6 +41,9 @@
 ###############################################################################
 #@HEADER
 #
+
+DEFAULT_CONFIGURATIONS_FILE = "configuration.yml"
+
 ###############################################################################
 NodeGossiper_module_aliases = {}
 for m in [
@@ -50,6 +53,7 @@ for m in [
     "os",
     "subprocess",
     "sys",
+    "yaml",
    ]:
     has_flag = "has_" + m
     try:
@@ -191,88 +195,193 @@ class ggParameters:
             opts, args = getopt.getopt(
                 sys.argv[1:],
                 "c:i:x:y:z:o:p:k:f:r:t:w:s:l:m:d:veh")
-        except getopt.GetoptError:
-            print(bcolors.ERR
-                + "** ERROR: incorrect command line arguments."
-                + bcolors.END)
-            self.usage()
-            return True
 
-        # Parse arguments and assign corresponding member variable values
-        for o, a in opts:
+            # Parse command line arguments if passed
+            if opts:
+                # Parse arguments and assign corresponding member variable values
+                for o, a in opts:
+                    try:
+                        i = int(a)
+                    except:
+                        i = None
+
+                    if o == '-c':
+                        self.criterion = i
+                    elif o == '-i':
+                        if i > -1:
+                            self.n_iterations = i
+                    elif o == '-x':
+                        if i > 0:
+                            self.grid_size[0] = i
+                    elif o == '-y':
+                        if i > 0:
+                            self.grid_size[1] = i
+                    elif o == '-z':
+                        if i > 0:
+                            self.grid_size[2] = i
+                    elif o == '-o':
+                        if i > 0:
+                            self.n_objects = i
+                    elif o == '-p':
+                        if i > 0:
+                            self.n_processors = i
+                    elif o == "-k":
+                        if i > 0:
+                            self.n_rounds = i
+                    elif o == '-f':
+                        if i > 0:
+                            self.fanout = i
+                    elif o == '-r':
+                        x = float(a)
+                        if x > 1.:
+                            self.threshold = x
+                    elif o == "-t":
+                        (self.time_sampler_type,
+                        self.time_sampler_parameters) = parse_sampler(a)
+                    elif o == "-w":
+                        (self.weight_sampler_type,
+                        self.weight_sampler_parameters) = parse_sampler(a)
+                    elif o == '-s':
+                         if i > -1:
+                             self.time_step = i
+                    elif o == '-l':
+                        self.log_file = a
+                    elif o == '-m':
+                        self.map_file = a
+                    elif o == '-d':
+                        if i > 0:
+                            self.communication_degree = i
+                            self.communication_enabled = True
+                    elif o == '-v':
+                        self.verbose = True
+                    elif o == '-e':
+                        self.exodus = True
+                    elif o == '-h':
+                        self.usage()
+                        sys.exit(0)
+            # Otherwise, parse configuration file
+            else:
+                self.parse_configuration_file()
+
+            # Ensure that exactly one population strategy was chosen
+            if (not (self.log_file or
+                     (self.time_sampler_type and self.weight_sampler_type))
+                or (self.log_file and
+                    (self.time_sampler_type or self.weight_sampler_type))):
+                print(bcolors.ERR
+                    + "** ERROR: exactly one strategy to populate initial phase "
+                    "must be chosen."
+                    + bcolors.END)
+                self.usage()
+                return True
+
+        # Except incomplete command line arguments
+        except getopt.GetoptError:
+
+            # Consider only one way to pass arguments
+            if os.path.isfile(DEFAULT_CONFIGURATIONS_FILE):
+                print(bcolors.ERR
+                    + "** ERROR: all arguments shall be saved in configuration file,"
+                    + " or passed in command line. "
+                    + bcolors.END)
+                return True
+            # Othersiwe, consider command line arguments incomplete
+            else:
+                print(bcolors.ERR
+                    + "** ERROR: incorrect command line arguments."
+                    + bcolors.END)
+                self.usage()
+                return True
+
+	    # No line parsing error occurred
+        return False
+
+    ###########################################################################
+    def parse_configuration_file(self):
+        """Parse configuration file and fill grid gossiper parameters
+        """
+
+        # Retrieve dictionary of parameters from file
+        conf_dict = None
+        with open(DEFAULT_CONFIGURATIONS_FILE) as p_file:
+             conf_dict = yaml.safe_load(p_file)
+
+        # Bail out early if dictionary is empty
+        if not conf_dict:
+            print(bcolors.HEADER
+                + "[NodeGossiper] "
+                + bcolors.END
+                + "No arguments found in {}".format(DEFAULT_CONFIGURATIONS_FILE))
+            return False
+
+        # Process retrieved non-empty dictionary
+        print(bcolors.HEADER
+            + "[NodeGossiper] "
+            + bcolors.END
+            + "Read {} configuration file {}".format(
+            len(conf_dict),
+            DEFAULT_CONFIGURATIONS_FILE))
+
+        # Iterate over all key/values to set arguments
+        for key, value in conf_dict.items():
+            # Keys are case-insensitive
+            key = key.lower()
+            # Cast the value as an integer is possible
             try:
-                i = int(a)
+                i = int(value)
             except:
                 i = None
+            # Cast the value as a float is possible
+            try:
+                x = float(value)
+            except:
+                x = None
 
-            if o == '-c':
+            # Set attributes on the basis of parsed values
+            if key == "transfer_criterion" and i:
                 self.criterion = i
-            elif o == '-i':
-                if i > -1:
-                    self.n_iterations = i
-            elif o == '-x':
-                if i > 0:
-                    self.grid_size[0] = i
-            elif o == '-y':
-                if i > 0:
-                    self.grid_size[1] = i
-            elif o == '-z':
-                if i > 0:
-                    self.grid_size[2] = i
-            elif o == '-o':
-                if i > 0:
-                    self.n_objects = i
-            elif o == '-p':
-                if i > 0:
-                    self.n_processors = i
-            elif o == "-k":
-                if i > 0:
-                    self.n_rounds = i
-            elif o == '-f':
-                if i > 0:
-                    self.fanout = i
-            elif o == '-r':
-                x = float(a)
+            elif key == "lb_iterations" and i:
+                self.n_iterations = i
+            elif key == "x_processors" and i:
+                self.grid_size[0] = i
+            elif key == "y_processors" and i:
+                self.grid_size[1] = i
+            elif key == "z_processors" and i:
+                self.grid_size[2] = i
+            elif key == "objects" and i:
+                self.n_objects = i
+            elif key == "used_processors" and i:
+                self.n_processors = i
+            elif key == "gossiping_rounds" and i:
+                self.n_rounds = i
+            elif key == "fan_out" and i:
+                self.fanout = i
+            elif key == "relative_threshold" and x:
                 if x > 1.:
                     self.threshold = x
-            elif o == "-t":
+            elif key == "times_sampler" and value:
                 (self.time_sampler_type,
-                self.time_sampler_parameters) = parse_sampler(a)
-            elif o == "-w":
+                self.time_sampler_parameters) = parse_sampler(value)
+            elif key == "weights_sampler" and value:
                 (self.weight_sampler_type,
-                self.weight_sampler_parameters) = parse_sampler(a)
-            elif o == '-s':
+                self.weight_sampler_parameters) = parse_sampler(value)
+            elif key == "log_time_stepping" and i:
                  if i > -1:
                      self.time_step = i
-            elif o == '-l':
-                self.log_file = a
-            elif o == '-m':
-                self.map_file = a
-            elif o == '-d':
+            elif key == "log_base_filename" and value:
+                self.log_file = value
+            elif key == "mapping_base_filename" and value:
+                self.map_file = value
+            elif key == "communication_degree" and i:
                 if i > 0:
                     self.communication_degree = i
                     self.communication_enabled = True
-            elif o == '-v':
+            elif key == "verbosity":
                 self.verbose = True
-            elif o == '-e':
+            elif key == "generate_exodus_output":
                 self.exodus = True
-            elif o == '-h':
-                self.usage()
-                sys.exit(0)
 
-	# Ensure that exactly one population strategy was chosen
-        if (not (self.log_file or
-                 (self.time_sampler_type and self.weight_sampler_type))
-            or (self.log_file and
-                (self.time_sampler_type or self.weight_sampler_type))):
-            print(bcolors.ERR
-                + "** ERROR: exactly one strategy to populate initial phase "
-                "must be chosen."
-                + bcolors.END)
-            self.usage()
-            return True
-
-	# No line parsing error occurred
+        # No line parsing error occurred
         return False
 
 ###############################################################################

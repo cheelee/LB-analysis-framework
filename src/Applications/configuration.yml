@@ -1,0 +1,18 @@
+transfer_criterion: 0
+lb_iterations: 10
+x_processors: 4
+y_processors: 4
+z_processors: 1
+objects: 1024
+used_processors: 2
+gossiping_rounds: 2
+fan_out: 2
+relative_threshold: 1
+times_sampler: uniform,0.0,1.0
+weights_sampler: lognormal,0.5,1.0
+log_time_stepping:
+#log_base_filename: data\lb50-stats\stats
+mapping_base_filename:
+communication_degree: 2
+#verbosity:
+generate_exodus_output:
