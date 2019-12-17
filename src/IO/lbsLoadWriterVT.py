@@ -59,7 +59,8 @@ for m in [
         print("** ERROR: failed to import {}. {}.".format(m, e))
         globals()[has_flag] = False
 
-from Model  import lbsPhase
+# Import LBAF modules
+from Model      import lbsPhase
 
 ########################################################################
 class LoadWriterVT:

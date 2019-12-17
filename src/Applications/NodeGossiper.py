@@ -63,29 +63,26 @@ for m in [
         print("** ERROR: failed to import {}. {}.".format(m, e))
         globals()[has_flag] = False
 
-if __name__ == '__main__':
-    if __package__ is None:
-        sys.path.append(
-            os.path.dirname(
-            os.path.dirname(
-            os.path.abspath(__file__))))
-        from Model                  import lbsPhase
-        from Execution              import lbsRuntime
-        from IO                     import lbsLoadWriterVT, lbsWriterExodusII, lbsStatistics
-        try:
-            from ParaviewViewerBase import ParaviewViewerBase
-            globals()["has_paraview"] = True
-        except:
-            globals()["has_paraview"] = False
-    else:
-        from ..Model                  import lbsPhase
-        from ..Execution              import lbsRuntime
-        from ..IO                     import lbsLoadWriterVT, lbsWriterExodusII, lbsStatistics
-        try:
-            from ..ParaviewViewerBase import ParaviewViewerBase
-            globals()["has_paraview"] = True
-        except:
-            globals()["has_paraview"] = False
+# Import LBAF modules
+if not __package__:
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from Model          import lbsPhase
+    from Execution      import lbsRuntime
+    from IO             import lbsLoadWriterVT, lbsStatistics, lbsWriterExodusII
+    try:
+        from Applications.ParaviewViewerBase    import ParaviewViewerBase
+        globals()["has_paraview"] = True
+    except:
+        globals()["has_paraview"] = False
+else:
+    from ..Model        import lbsPhase
+    from ..Execution    import lbsRuntime
+    from ..IO           import lbsLoadWriterVT, lbsStatistics, lbsWriterExodusII
+    try:
+        from ..Applications.ParaviewViewerBase  import ParaviewViewerBase
+        globals()["has_paraview"] = True
+    except:
+        globals()["has_paraview"] = False
 
 ###############################################################################
 class ggParameters:

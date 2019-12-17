@@ -43,7 +43,8 @@
 #
 ########################################################################
 
-from Model import lbsObjectCommunicator
+# Import LBAF modules
+from Model      import lbsObjectCommunicator
 
 ########################################################################
 class Object:

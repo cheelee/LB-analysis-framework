@@ -22,6 +22,7 @@ for m in [
         print("*  WARNING: Failed to import {}. {}.".format(m, e))
         globals()[has_flag] = False
 
+# Import paraview sub-packages
 try:
     import paraview.simple as pv
     globals()["has_paraview"] = True

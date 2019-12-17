@@ -66,7 +66,8 @@ for m in [
         print("** ERROR: failed to import {}. {}.".format(m, e))
         globals()[has_flag] = False
 
-from MoveCountsViewerParameters         import MoveCountsViewerParameters
+# Import LBAF modules
+from Applications.MoveCountsViewerParameters    import MoveCountsViewerParameters
 
 ###############################################################################
 class MoveCountsViewer:

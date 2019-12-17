@@ -26,16 +26,21 @@ except:
     if not __name__ == '__main':
         print("[PNGViewer] Failed to import paraview. Cannot save visual artifacts.")
         sys.exit(0)
-from ParaviewViewer    import ParaviewViewer
 
-if __name__ == '__main__':
-    if __package__ is None:
-        sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        from ParaviewViewerBase     import ViewerParameters
-        from ParaviewViewerBase     import ParaviewViewerBase
-    else:
-        from ..ParaviewViewerBase   import ViewerParameters
-        from ..ParaviewViewerBase   import ParaviewViewerBase
+# Import LBAF modules
+from Applications.ParaviewViewerBase    import ParaviewViewerBase, ViewerParameters
+from Applications.ParaviewViewer        import ParaviewViewer
+
+# from Applications.ParaviewViewer    import ParaviewViewer
+#
+# if __name__ == '__main__':
+#     if not __package__:
+#         sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+#         from ParaviewViewerBase     import ViewerParameters
+#         from ParaviewViewerBase     import ParaviewViewerBase
+#     else:
+#         from ..ParaviewViewerBase   import ViewerParameters
+#         from ..ParaviewViewerBase   import ParaviewViewerBase
 
 ###############################################################################
 class PNGViewer(ParaviewViewer):

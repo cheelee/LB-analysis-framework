@@ -61,7 +61,8 @@ for m in [
         print("** ERROR: failed to import {}. {}.".format(m, e))
         globals()[has_flag] = False
 
-from Model  import lbsObject, lbsProcessor
+# Import LBAF modules
+from Model      import lbsObject, lbsProcessor
 
 ########################################################################
 class LoadReader:

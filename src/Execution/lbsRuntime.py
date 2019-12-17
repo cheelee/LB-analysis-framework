@@ -60,9 +60,10 @@ for m in [
         print("** ERROR: failed to import {}. {}.".format(m, e))
         globals()[has_flag] = False
 
-from Model      import lbsProcessor, lbsPhase
-from IO         import lbsStatistics
+# Import LBAF modules
 from Execution  import lbsCriterionBase
+from IO         import lbsStatistics
+from Model      import lbsProcessor, lbsPhase
 
 ########################################################################
 class Runtime:

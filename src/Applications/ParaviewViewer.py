@@ -20,17 +20,22 @@ for m in [
         print("*  WARNING: Failed to import {}. {}.".format(m, e))
         globals()[has_flag] = False
 
-from ParaviewViewerBase import ViewerParameters
-from ParaviewViewerBase import ParaviewViewerBase
+# Import LBAF modules
+from Applications.ParaviewViewerBase    import ParaviewViewerBase, ViewerParameters
+from Applications.PNGViewer             import PNGViewer
+from Applications.AnimationViewer       import AnimationViewer
 
-if __name__ == '__main__':
-    if __package__ is None:
-        sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        from PNGViewer              import PNGViewer
-        from AnimationViewer        import AnimationViewer
-    else:
-        from ..PNGViewer            import PNGViewer
-        from ..AnimationViewer      import AnimationViewer
+# from ParaviewViewerBase import ViewerParameters
+# from ParaviewViewerBase import ParaviewViewerBase
+#
+# if __name__ == '__main__':
+#     if not __package__:
+#         sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+#         from PNGViewer              import PNGViewer
+#         from AnimationViewer        import AnimationViewer
+#     else:
+#         from ..PNGViewer            import PNGViewer
+#         from ..AnimationViewer      import AnimationViewer
 
 ###############################################################################
 class ParaviewViewer(ParaviewViewerBase):

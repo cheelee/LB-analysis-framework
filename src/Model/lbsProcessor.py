@@ -49,6 +49,7 @@ for m in [
     "bcolors",
     "random",
     "sys",
+    "time",
     ]:
     has_flag = "has_" + m
     try:
@@ -62,8 +63,9 @@ for m in [
         print("*  ERROR: failed to import {}. {}.".format(m, e))
         globals()[has_flag] = False
 
-from Model import lbsObject, lbsMessage
-import time
+# Import LBAF modules
+from Model      import lbsObject, lbsMessage
+
 ########################################################################
 class Processor:
     """A class representing a processor to which objects are assigned

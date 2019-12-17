@@ -59,8 +59,9 @@ for m in [
         print("** ERROR: failed to import {}. {}.".format(m, e))
         globals()[has_flag] = False
 
-from Model  import lbsPhase
-from IO     import lbsGridStreamer
+# Import LBAF modules
+from IO         import lbsGridStreamer
+from Model      import lbsPhase
 
 ########################################################################
 class WriterExodusII:

@@ -63,8 +63,9 @@ for m in [
         print("** ERROR: failed to import {}. {}.".format(m, e))
         globals()[has_flag] = False
 
-from Model import lbsObject, lbsProcessor, lbsObjectCommunicator
-from IO    import lbsStatistics, lbsLoadReaderVT
+# Import LBAF modules
+from Model      import lbsObject, lbsProcessor, lbsObjectCommunicator
+from IO         import lbsStatistics, lbsLoadReaderVT
 
 ########################################################################
 class Phase:
