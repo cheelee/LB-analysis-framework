@@ -94,9 +94,7 @@ class Runtime:
         self.Criterion = c
 
         # Initialize load and sent distributions
-        self.load_distributions = [map(
-            lambda x: x.get_load(),
-            self.phase.processors)]
+        self.load_distributions = [[x.get_load() for x in self.phase.processors]]
         self.sent_distributions = [{k:v for k,v in self.phase.get_edges().items()}]
 
         # Compute global load and weight statistics and initialize average load
@@ -328,9 +326,7 @@ class Runtime:
                     + "no transfers were proposed")
 
             # Append new load and sent distributions to existing lists
-            self.load_distributions.append(map(
-                lambda x: x.get_load(),
-                self.phase.get_processors()))
+            self.load_distributions.append([x.get_load() for x in self.phase.processors])
             self.sent_distributions.append({k:v for k,v in self.phase.get_edges().items()})
 
             # Compute and store global processor load and link weight statistics

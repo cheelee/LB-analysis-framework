@@ -169,6 +169,9 @@ class ParaviewViewerBase(object):
 
         # Paraview viewer
         elif viewer_type == "":
+            ParaviewViewer = getattr(importlib.import_module("ParaviewViewer"),
+                "ParaviewViewer")
+            ret_object = ParaviewViewer(exodus, file_name)
             try:
                 ParaviewViewer = getattr(importlib.import_module("ParaviewViewer"),
                     "ParaviewViewer")
@@ -516,6 +519,10 @@ class ParaviewViewerBase(object):
 
         # Activate glyph source
         pv.SetActiveSource(glyph)
+
+        # Assign view to new layout
+        layout = pv.CreateLayout()
+        pv.AssignViewToLayout(view=renderView, layout=layout)
 
         return reader
 

@@ -28,8 +28,13 @@ except:
         sys.exit(0)
 
 # Import LBAF modules
-from Applications.ParaviewViewerBase    import ParaviewViewerBase, ViewerParameters
-from Applications.ParaviewViewer        import ParaviewViewer
+if not __package__:
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from Applications.ParaviewViewerBase    import ParaviewViewerBase, ViewerParameters
+    from Applications.ParaviewViewer        import ParaviewViewer
+else:
+    from .ParaviewViewerBase    import ParaviewViewerBase, ViewerParameters
+    from .ParaviewViewer        import ParaviewViewer
 
 # from Applications.ParaviewViewer    import ParaviewViewer
 #

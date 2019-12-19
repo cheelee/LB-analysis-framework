@@ -21,9 +21,15 @@ for m in [
         globals()[has_flag] = False
 
 # Import LBAF modules
-from Applications.ParaviewViewerBase    import ParaviewViewerBase, ViewerParameters
-from Applications.PNGViewer             import PNGViewer
-from Applications.AnimationViewer       import AnimationViewer
+if not __package__:
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from Applications.ParaviewViewerBase    import ParaviewViewerBase, ViewerParameters
+    # from Applications.PNGViewer             import PNGViewer
+    # from Applications.AnimationViewer       import AnimationViewer
+else:
+    from ParaviewViewerBase  import ParaviewViewerBase, ViewerParameters
+    # from PNGViewer           import PNGViewer
+    # from AnimationViewer     import AnimationViewer
 
 # from ParaviewViewerBase import ViewerParameters
 # from ParaviewViewerBase import ParaviewViewerBase

@@ -30,8 +30,13 @@ except:
         sys.exit(0)
 
 # Import LBAF modules
-from Applications.ParaviewViewerBase    import ParaviewViewerBase, ViewerParameters
-from Applications.ParaviewViewer        import ParaviewViewer
+if not __package__:
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from Applications.ParaviewViewerBase    import ParaviewViewerBase, ViewerParameters
+    from Applications.ParaviewViewer        import ParaviewViewer
+else:
+    from ParaviewViewerBase    import ParaviewViewerBase, ViewerParameters
+    from ParaviewViewer        import *
 
 # if __name__ == '__main__':
 #     if not __package__:
@@ -72,10 +77,10 @@ class AnimationViewer(ParaviewViewer):
             + bcolors.END
             + "###  Generating AVI animation...")
         pv.WriteAnimation(self.file_name+".avi",
-                       Magnification=1,
-                       Quality = 2,
-                       FrameRate=1.0,
-                       Compression=True)
+            Magnification=1,
+            Quality = 2,
+            FrameRate=1.0,
+            Compression=True)
         print(bcolors.HEADER
             + "[AnimationViewer] "
             + bcolors.END
