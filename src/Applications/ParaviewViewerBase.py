@@ -520,9 +520,9 @@ class ParaviewViewerBase(object):
         # Activate glyph source
         pv.SetActiveSource(glyph)
 
-        # Assign view to new layout
-        layout = pv.CreateLayout()
-        pv.AssignViewToLayout(view=renderView, layout=layout)
+        # # Assign view to new layout
+        # layout = pv.CreateLayout()
+        # pv.AssignViewToLayout(view=renderView, layout=layout)
 
         return reader
 

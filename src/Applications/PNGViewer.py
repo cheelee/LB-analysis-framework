@@ -67,6 +67,9 @@ class PNGViewer(ParaviewViewer):
         animationScene = pv.GetAnimationScene()
         animationScene.PlayMode = "Snap To TimeSteps"
 
+        # Assign active view to new layout
+        pv.AssignViewToLayout(view=pv.GetActiveView(), layout=pv.CreateLayout())
+
         # Save animation images
         print(bcolors.HEADER
             + "[PNGViewer] "
